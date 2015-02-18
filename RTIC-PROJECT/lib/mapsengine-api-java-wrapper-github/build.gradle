@@ -1,0 +1,106 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'provided-base'
+
+group = 'com.google.maps'
+
+repositories {
+    mavenCentral()
+}
+
+// Import the 'provided' plugin for dependencies
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:1.12.+'
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+  
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+dependencies {
+    compile 'com.google.api-client:google-api-client:1.19.0'
+    compile 'com.google.http-client:google-http-client-gson:1.19.0'
+    provided 'com.google.apis:google-api-services-mapsengine:v1-rev44-1.19.0'
+    testCompile group: 'junit', name: 'junit', version: '4.4'
+    testCompile 'org.easymock:easymock:3.2'
+    testCompile 'org.powermock:powermock-module-junit4:1.5.6'
+    testCompile 'org.powermock:powermock-api-easymock:1.5.6'
+    testCompile 'com.google.http-client:google-http-client-jackson:1.19.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'java/'
+        }
+    }
+    test {
+        java {
+            srcDir 'javatests/'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	    
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+  
+            pom.project {
+                name 'Google Maps Engine client library wrapper'
+                packaging 'jar'
+                description 'Provides some extra sugar for the machine-generated Java library for Google Maps Engine. ' +
+                    'https://developers.google.com/api-client-library/java/apis/mapsengine/v1'
+                url 'https://github.com/googlemaps/mapsengine-api-java-wrapper'
+
+                scm {
+                    url 'scm:git@github.com:googlemaps/mapsengine-api-java-wrapper.git'
+                    connection 'scm:git@github.com:googlemaps/mapsengine-api-java-wrapper.git'
+                    developerConnection 'scm:git@github.com:googlemaps/mapsengine-api-java-wrapper.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'markmcd'
+                        name 'Mark McDonald'
+                        url 'https://google.com/+MarkMcDonald0'
+                    }
+                }
+            }
+        }
+    }
+}
+
+if (ext.'signing.secretKeyRingFile') {
+    signing {
+        sign configurations.archives
+    }
+}
