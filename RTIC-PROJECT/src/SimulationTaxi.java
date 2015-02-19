@@ -15,7 +15,7 @@ public double calTotalDistance(){
 	
 	double totalDistance = 0.0;
 	try {
-		BufferedReader br0 = new BufferedReader(new InputStreamReader(new FileInputStream("data/Á©-2148.txt")));
+		BufferedReader br0 = new BufferedReader(new InputStreamReader(new FileInputStream("data/·Ê-3232.txt")));
 	    try {
 	    	
 	    	
@@ -45,13 +45,13 @@ public double calTotalDistance(){
 	            double lat1 = Double.parseDouble(latS);
 	            double lng1 = Double.parseDouble(lngS);
 	            
-	            System.out.println("i = " + i + "\t lat0" + lat0 + "\t lng0" + lng0 +"\t lat1" + lat1 +"\t lng1" + lng1 );
+	           //System.out.println("i = " + i + "\t lat0" + lat0 + "\t lng0" + lng0 +"\t lat1" + lat1 +"\t lng1" + lng1 );
 	            
 	            // have to filter time when server down and start on different point
 		        if(lat0 > 13.495060 && lat0 < 13.956429 && lng0 > 100.329752 && lng0 < 100.936369){
 		        	if(lat1 > 13.495060 && lat1 < 13.956429 && lng1 > 100.329752 && lng1 < 100.936369){
 		        		totalDistance = totalDistance + haversinDistance(lat0, lng0, lat1, lng1);
-			            System.out.println("total distance = " + totalDistance);
+			           // System.out.println("total distance = " + totalDistance);
 		        	}
 		        }
 	            

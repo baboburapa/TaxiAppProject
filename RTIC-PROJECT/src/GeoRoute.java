@@ -1,15 +1,24 @@
 public class GeoRoute {
 	
+	private String plate;
 	private int type;                         //Occupy = 0, Vacant = 1
 	private double lat;
 	private double lng;
 	private double Nlat;
 	private double Nlng;
 	
-	public GeoRoute(int type, double lat, double lng, double Nlat, double Nlng) {
+	
+	public void printGeoRoute() {
+		
+		System.out.println("Plate: " + plate + ", Type: " + type + ", Lat: " + lat + ", Lng: " + lng + ", NLat: " + Nlat + ", NLng: " + Nlng);
+		
+	}
+	
+	public GeoRoute(String plate, int type, double lat, double lng, double Nlat, double Nlng) {
 		
 		if (type == 0 || type == 1) {
 			
+			this.plate = plate;
 			this.type = type;
 			this.lat = lat;
 			this.lng = lng;
@@ -19,6 +28,14 @@ public class GeoRoute {
 		}
 	}
 
+	public String getPlate() {
+		return plate;
+	}
+	
+	public void setPlate(String plate) {
+		this.plate = plate;
+	}
+	
 	public int getType() {
 		return type;
 	}

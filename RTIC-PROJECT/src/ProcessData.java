@@ -1,16 +1,13 @@
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ProcessData {
@@ -23,43 +20,133 @@ public class ProcessData {
 	private final static String DateFormat = "yyyy-MM-dd HH:mm:ss";
 	
 	HttpsGetDataRTIC http = new HttpsGetDataRTIC();
-	Database DB = new Database("jdbc:mysql://" + DBIP + ":3306/", DBName, DBPass);
+	//Database DB = new Database("jdbc:mysql://" + DBIP + ":3306/", DBName, DBPass);
 	GoogleDirections gd = new GoogleDirections();
+	SimulationTaxi st = new SimulationTaxi();
 
 	public static void main(String[] args) throws Exception {
 		
 		ProcessData pd = new ProcessData();
 		
-		pd.getAllRoute();
+		List<GeoRouteList> allRoute = pd.getAllRoute();
+		
+		List<DistancePair<String, Double>> totalDis = pd.calTotalDis(allRoute);
+		List<DistancePair<String, Double>> occDis = pd.calOccDis(allRoute);
+		
+		System.out.println("Total: ");
+		for(DistancePair<String, Double> dp : totalDis) {
+			
+			dp.print();
+			
+		}
+		
+		System.out.println("Occ: ");
+		for(DistancePair<String, Double> dp : occDis) {
+			
+			dp.print();
+			
+		}
+		
+		//System.out.println(st.calTotalDistance());
 		
 	}
 	
-	public List<List<GeoRoute>> getAllRoute() throws Exception {
+public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute) {
 		
-		List<GeoRoute> allRouteOfPlate = new ArrayList<GeoRoute>();
-		List<List<GeoRoute>> allRoute = new ArrayList<List<GeoRoute>>();
+		String plate = "";
+		List<DistancePair<String, Double>> allDis = new ArrayList<DistancePair<String,Double>>();
+		
+		for(GeoRouteList grList : allRoute) {
+			
+			int i = 0;
+			double dis = 0.0;
+			
+			for(GeoRoute gr : grList) {
+				
+				plate = gr.getPlate();
+				
+				if(gr.getType() == 0) {
+					
+					dis += st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng());
+					i++;
+					
+				}
+				//gr.printGeoRoute();
+				//System.out.println("dis = " + st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng()));
+				
+			}
+			
+			allDis.add(new DistancePair<String, Double>(plate, dis));
+			//System.out.println(plate + " : " + dis + " Times: " + i);
+			
+		}
+		
+		return allDis;
+		
+	}
+	
+	public List<DistancePair<String, Double>> calTotalDis(List<GeoRouteList> allRoute) {
+		
+		String plate = "";
+		 List<DistancePair<String, Double>> allDis = new ArrayList<DistancePair<String,Double>>();
+		
+		for(GeoRouteList grList : allRoute) {
+			
+			int i = 0;
+			double dis = 0.0;
+			
+			for(GeoRoute gr : grList) {
+				
+				plate = gr.getPlate();
+				dis += st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng());
+				i++;
+				//gr.printGeoRoute();
+				//System.out.println("dis = " + st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng()));
+				
+			}
+			
+			allDis.add(new DistancePair<String, Double>(plate, dis));
+			//System.out.println(plate + " : " + dis + " Times: " + i);
+			
+		}
+		
+		return allDis;
+		
+	}
+	
+	public List<GeoRouteList> getAllRoute() throws Exception {
+		
+		List<GeoRouteList> allRoute = new ArrayList<GeoRouteList>();
 		
 		List<String> carList = http.readCarList("carlist.txt");
 		
-		List<AllJSONOfPlate> allJSON = getAllJSON(carList);
+		JSONObject allJSON = getAllJSON(carList);
 		
 		double lat = -1;
 		double lng = -1;
-		//double Nlat;
-		//double Nlng;
 		String before = "";
-		String after = "";
+		//String after = "";
 		int meter = -1;
 		
-		for(AllJSONOfPlate aj : allJSON) {
+		for(String plate : carList) {
 			
-			for(JSONObject jo : aj) {
+			JSONArray ja = allJSON.getJSONArray(plate);
+			JSONObject jo;
+			GeoRouteList allRouteOfPlate = new GeoRouteList();
+			
+			for(int i = 0 ; i < ja.length() ; i++) {
 				
-				//GeoRoute gr;
+				jo = ja.getJSONObject(i);
 				
 				if(before != "" && dateDiff(DateFormat, before, jo.getString("update_time")) < 5) {
 					
-					allRouteOfPlate.add(new GeoRoute(meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng")));
+					if(checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
+						
+						GeoRoute gr = new GeoRoute(plate, meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng"));
+						allRouteOfPlate.add(gr);
+						//gr.printGeoRoute();
+						
+					}
 					
 				}
 					
@@ -75,52 +162,30 @@ public class ProcessData {
 		}  // End aj
 		
 		return allRoute;
-		
-		/*
-		for (String plate : carList) {
-			
-			//System.out.println(plate);
-			double lat;
-			double lng;
-			String before = "";
-			String meter;
-			//int state = -1;
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
-			String line;
-			
-			while((line = br.readLine()) != null) {
-				
-				String infor = (line.substring(1, line.length() - 1)).trim();
-				System.out.println(infor);
-				JSONObject data;
-				
-				try{
-					
-					data = new JSONObject(infor);
-					
-				}catch(Exception e){
-					
-					System.out.println(plate +  ":" + infor + e);
-					break;
-					
-				}
-				
-				if(before == "") {
-					
-					
-					
-				}
 
-			
-				
-			
-			}  // End while
-			br.close();
-		}  // End for	
-		*/
 	}
 	
+	public boolean checkValidLatLng(double lat0, double lng0, double lat1, double lng1) {
+		
+		if(lat0 != lat1 || lng0 != lng1) {
+			
+        	if(lat0 > 13.495060 && lat0 < 13.956429 && lng0 > 100.329752 && lng0 < 100.936369) {
+        		
+	        	if(lat1 > 13.495060 && lat1 < 13.956429 && lng1 > 100.329752 && lng1 < 100.936369) {
+	        		
+	        		return true;
+	        		
+	        	}
+	        	
+        	}
+        	
+		}
+		
+		return false;
+		
+	}
+	
+	/*
 	public void sendOldDataToDB(String dbName) throws Exception {
 		
 		List<String> carList = http.readCarList("carlist.txt");
@@ -137,45 +202,14 @@ public class ProcessData {
 				}catch(Exception e) {
 					DB.insertJSON(dbName, plate, infor);
 				}
-				/*
-				JSONObject data;
-				try{
-					data = new JSONObject(infor);
-				}catch(Exception e){
-					System.out.println(plate +  ":" + infor + e);
-					break;
-				}
-				
-				//String meter = data .getInt("meter") + "";
-				//String speed = data .getString("speed");
-				//String acc = data .getInt("acc") + "";
-				String datetime = data .getString("update_time");
-				//String lat = data .getDouble("lat") + "";
-				//String lng = data .getDouble("lng") + "";
-				
-				if(before == null)		before = datetime;
-				else {
-					
-					diff = dateDiff(DateFormat, before, datetime);
-					if(diff <= 3) {
-						DB.insertJSON(dbName, plate, infor);
-						before = datetime;
-					}
-					else {
-						DB.insertJSON(dbName, plate,"{\"lat\":\"a\",\"lng\":\"a\",\"speed\":\"a\",\"direction\":\"a\",\"acc\":\"a\",\"meter\":\"a\",\"ts\":\"a\"}");
-						DB.insertJSON(dbName, plate, infor);
-						before = datetime;
-					}
-					
-				}
-				*/
+
 				line = br.readLine();
 			}
 			br.close();
 		}
 		
 	}
-	
+	*/
 	public long dateDiff(String dateFormat, String date1, String date2) {
 		
 		long diff = 0;
@@ -266,44 +300,51 @@ public class ProcessData {
 		
 	}
 	
-	public List<AllJSONOfPlate> getAllJSON(List<String> carList) throws Exception {
+	public JSONObject getAllJSON(List<String> carList) throws Exception {
 		
-		List<AllJSONOfPlate> allJSON = new ArrayList<AllJSONOfPlate>();
+		JSONObject allJSON = new JSONObject();
 		
-		for (String plate : carList) {
+			for (String plate : carList) {
 			
-			//System.out.println(plate);
+				//System.out.println(plate);
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
-			String line;
-			AllJSONOfPlate temp = new AllJSONOfPlate();
+				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
+				String line;
+				JSONArray temp = new JSONArray();
 			
-			while((line = br.readLine()) != null) {
+				while((line = br.readLine()) != null) {
 				
-				String infor = (line.substring(1, line.length() - 1)).trim();
-				//System.out.println(infor);
-				JSONObject data;
+					//String infor = (line.substring(1, line.length() - 1)).trim();
+					//System.out.println(infor);
+					line = line.replaceAll("\\p{C}", "");
+					JSONArray  data;
 				
-				try{
+					try{
 					
-					data = new JSONObject(infor);
+						data = new JSONArray(line.trim());
+						//data = new JSONObject(infor);
 					
-				}catch(Exception e){
+					}catch(Exception e){
 					
-					System.out.println(plate +  ":" + infor + e);
-					break;
+						System.out.println(plate +  ":" + line + e);
+						line = line.substring(1);
+						data = new JSONArray(line.trim());
+						//break;
 					
-				}
+					}
 				
-				temp.add(data);
+					//data.accumulate("plate", plate);
+					temp.put(data.getJSONObject(0));
 				
-			}  // End while
+				}  // End while
 			
-			allJSON.add(temp);
+			
+				allJSON.put(plate, temp);
 		
-		}  // End for
+			}  // End for
 		
-		return allJSON;
+			System.out.println("Get JSON Complete ^_^");
+			return allJSON;
 		
 	}
 	
