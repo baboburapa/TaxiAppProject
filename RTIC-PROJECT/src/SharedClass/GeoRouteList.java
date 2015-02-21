@@ -21,7 +21,7 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	
 	public void print() { 
 		
-		System.out.println("Plate: " + plate + "/t TotalDiatance: " + totalDis + "/t OccupyDiatance: " + occDis + "/t VacantDiatance: " + vacDis);
+		System.out.println("Plate: " + plate + "\t \t TotalDiatance: " + totalDis + "\t \t OccupyDiatance: " + occDis + "\t \t VacantDiatance: " + vacDis);
 		  		 
 	}
 	
@@ -40,7 +40,7 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 			
 			if(temp.getType() == gr.getType()) {
 				
-				temp.addDistance(gr.getDis());
+				temp.addDistance(gr);
 				temp.setEnd(gr.getEnd());
 				super.add(this.size() - 1, temp);
 				

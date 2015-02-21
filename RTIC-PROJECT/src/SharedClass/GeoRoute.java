@@ -21,9 +21,9 @@ public class GeoRoute {
 		
 	}
 	
-	public void addDistance(double distance) {
+	public void addDistance(GeoRoute gr) {
 		
-		dis += distance;
+		dis += gr.getDis();
 		
 	}
 	

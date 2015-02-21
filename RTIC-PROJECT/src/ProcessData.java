@@ -17,7 +17,7 @@ public class ProcessData {
 	//private final static String DBPass = "123457890";
 	private final static String DBName = "root";
 	private final static String DBPass = "";
-	private final static String DateFormat = "yyyy-MM-dd HH:mm:ss";
+	//private final static String DateFormat = "yyyy-MM-dd HH:mm:ss";
 	
 	HttpsGetDataRTIC http = new HttpsGetDataRTIC();
 	//Database DB = new Database("jdbc:mysql://" + DBIP + ":3306/", DBName, DBPass);
@@ -30,97 +30,14 @@ public class ProcessData {
 		
 		List<GeoRouteList> allRoute = pd.getAllRoute();
 		
-		//List<Pair<String, Double>> totalDis = pd.calTotalDis(allRoute);
-		//List<Pair<String, Double>> occDis = pd.calOccDis(allRoute);
-		
 		for(GeoRouteList grl : allRoute) {
 			
 			grl.print();
 			
 		}
 		
-		/*
-		for(Pair<String, Double> dp : totalDis) {
-			
-			System.out.print("[Total] ");
-			dp.print();
-			
-		}
-		
-		for(Pair<String, Double> dp : occDis) {
-			
-			System.out.print("[Occ] ");
-			dp.print();
-			
-		}
-		*/
-		//System.out.println(st.calTotalDistance());
-		
 	}
-	/*
-	public List<Pair<String, Double>> calOccDis(List<GeoRouteList> allRoute) {
-		
-		String plate = "";
-		List<Pair<String, Double>> allDis = new ArrayList<Pair<String,Double>>();
-		
-		for(GeoRouteList grList : allRoute) {
-			
-			int i = 0;
-			double dis = 0.0;
-			
-			for(GeoRoute gr : grList) {
-				
-				plate = gr.getPlate();
-				
-				if(gr.getType() == 1) {
-					
-					dis += st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng());
-					i++;
-					
-				}
-				//gr.printGeoRoute();
-				//System.out.println("dis = " + st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng()));
-				
-			}
-			
-			allDis.add(new Pair<String, Double>(plate, dis));
-			//System.out.println(plate + " : " + dis + " Times: " + i);
-			
-		}
-		
-		return allDis;
-		
-	}
-	
-	public List<Pair<String, Double>> calTotalDis(List<GeoRouteList> allRoute) {
-		
-		String plate = "";
-		 List<Pair<String, Double>> allDis = new ArrayList<Pair<String,Double>>();
-		
-		for(GeoRouteList grList : allRoute) {
-			
-			int i = 0;
-			double dis = 0.0;
-			
-			for(GeoRoute gr : grList) {
-				
-				plate = gr.getPlate();
-				dis += st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng());
-				i++;
-				//gr.printGeoRoute();
-				//System.out.println("dis = " + st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng()));
-				
-			}
-			
-			allDis.add(new Pair<String, Double>(plate, dis));
-			//System.out.println(plate + " : " + dis + " Times: " + i);
-			
-		}
-		
-		return allDis;
-		
-	}
-	*/
+
 	public List<GeoRouteList> getAllRoute() throws Exception {
 		
 		List<GeoRouteList> allRoute = new ArrayList<GeoRouteList>();
@@ -131,8 +48,7 @@ public class ProcessData {
 		
 		double lat = -1;
 		double lng = -1;
-		String before = "";
-		//String after = "";
+		MyDate before = null;
 		int meter = -1;
 		
 		for(String plate : carList) {
@@ -145,7 +61,7 @@ public class ProcessData {
 				
 				jo = ja.getJSONObject(i);
 				
-				if(before != "" && dateDiff(DateFormat, before, jo.getString("update_time")) < 5) {
+				if(before != null && before.dateDiff(before, new MyDate(jo.getString("update_time")), 1) < 5) {
 					
 					if(checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
 						
@@ -157,7 +73,7 @@ public class ProcessData {
 					
 				}
 					
-				before = jo.getString("update_time");
+				before = new MyDate(jo.getString("update_time"));
 				meter = jo.getInt("meter");
 				lat = jo.getDouble("lat");
 				lng = jo.getDouble("lng");
@@ -218,33 +134,6 @@ public class ProcessData {
 		
 	}
 	*/
-	public long dateDiff(String dateFormat, String date1, String date2) {
-		
-		long diff = 0;
-		
-		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		
-		Date before = null;
-		Date after = null;
-		
-		try {
-		    before = sdf.parse(date1);
-		    after = sdf.parse(date2);
-		} catch (ParseException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		
-		diff = after.getTime() - before.getTime();         //diff in mS
-		
-		//long diffSeconds = diff / 1000;
-		long diffMinutes = diff / (60 * 1000);
-		//long diffHours = diff / (60 * 60 * 1000);
-		//long diffDays = diff / (24 * 60 * 60 * 1000);		
-		
-		return diffMinutes;
-		
-	}
 	
 	public void getOccupyPoint() throws Exception {
 		
@@ -322,27 +211,65 @@ public class ProcessData {
 			
 				while((line = br.readLine()) != null) {
 				
-					//String infor = (line.substring(1, line.length() - 1)).trim();
-					//System.out.println(infor);
 					line = line.replaceAll("\\p{C}", "");
 					JSONArray  data;
 				
 					try{
 					
 						data = new JSONArray(line.trim());
-						//data = new JSONObject(infor);
 					
 					}catch(Exception e){
 					
 						System.out.println(plate +  ":" + line + e);
-						line = line.substring(1);
-						data = new JSONArray(line.trim());
-						//break;
+						break;
 					
 					}
 				
-					//data.accumulate("plate", plate);
 					temp.put(data.getJSONObject(0));
+				
+				}  // End while
+			
+			
+				allJSON.put(plate, temp);
+		
+			}  // End for
+		
+			System.out.println("Get JSON Complete ^_^");
+			return allJSON;
+		
+	}
+	
+public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
+		
+		JSONObject allJSON = new JSONObject();
+		
+			for (String plate : carList) {
+			
+				//System.out.println(plate);
+			
+				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
+				String line;
+				JSONArray temp = new JSONArray();
+			
+				while((line = br.readLine()) != null) {
+				
+					line = line.replaceAll("\\p{C}", "");
+					JSONArray  data;
+				
+					try{
+					
+						data = new JSONArray(line.trim());
+					
+					}catch(Exception e){
+					
+						System.out.println(plate +  ":" + line + e);
+						break;
+					
+					}
+					
+					JSONObject json = data.getJSONObject(0);
+					MyDate date = new MyDate(json.getString("update_time"));
+					if(date.isBetween(start, end)) temp.put(json);
 				
 				}  // End while
 			
