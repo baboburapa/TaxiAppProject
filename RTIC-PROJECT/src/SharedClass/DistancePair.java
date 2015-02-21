@@ -14,7 +14,7 @@ public class DistancePair<String, Double> {
     
     public void print() {
     	
-    	System.out.println("Plate: " + plate + " Distance: " + distance);
+    	System.out.println("Plate: " + plate + "\t Distance: " + distance);
     	
     }
 

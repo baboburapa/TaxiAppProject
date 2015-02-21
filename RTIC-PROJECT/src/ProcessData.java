@@ -30,31 +30,38 @@ public class ProcessData {
 		
 		List<GeoRouteList> allRoute = pd.getAllRoute();
 		
-		List<DistancePair<String, Double>> totalDis = pd.calTotalDis(allRoute);
-		List<DistancePair<String, Double>> occDis = pd.calOccDis(allRoute);
+		//List<Pair<String, Double>> totalDis = pd.calTotalDis(allRoute);
+		//List<Pair<String, Double>> occDis = pd.calOccDis(allRoute);
 		
-		System.out.println("Total: ");
-		for(DistancePair<String, Double> dp : totalDis) {
+		for(GeoRouteList grl : allRoute) {
 			
+			grl.print();
+			
+		}
+		
+		/*
+		for(Pair<String, Double> dp : totalDis) {
+			
+			System.out.print("[Total] ");
 			dp.print();
 			
 		}
 		
-		System.out.println("Occ: ");
-		for(DistancePair<String, Double> dp : occDis) {
+		for(Pair<String, Double> dp : occDis) {
 			
+			System.out.print("[Occ] ");
 			dp.print();
 			
 		}
-		
+		*/
 		//System.out.println(st.calTotalDistance());
 		
 	}
-	
-public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute) {
+	/*
+	public List<Pair<String, Double>> calOccDis(List<GeoRouteList> allRoute) {
 		
 		String plate = "";
-		List<DistancePair<String, Double>> allDis = new ArrayList<DistancePair<String,Double>>();
+		List<Pair<String, Double>> allDis = new ArrayList<Pair<String,Double>>();
 		
 		for(GeoRouteList grList : allRoute) {
 			
@@ -65,7 +72,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 				
 				plate = gr.getPlate();
 				
-				if(gr.getType() == 0) {
+				if(gr.getType() == 1) {
 					
 					dis += st.haversinDistance(gr.getLat(), gr.getLng(), gr.getNlat(), gr.getNlng());
 					i++;
@@ -76,7 +83,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 				
 			}
 			
-			allDis.add(new DistancePair<String, Double>(plate, dis));
+			allDis.add(new Pair<String, Double>(plate, dis));
 			//System.out.println(plate + " : " + dis + " Times: " + i);
 			
 		}
@@ -85,10 +92,10 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 		
 	}
 	
-	public List<DistancePair<String, Double>> calTotalDis(List<GeoRouteList> allRoute) {
+	public List<Pair<String, Double>> calTotalDis(List<GeoRouteList> allRoute) {
 		
 		String plate = "";
-		 List<DistancePair<String, Double>> allDis = new ArrayList<DistancePair<String,Double>>();
+		 List<Pair<String, Double>> allDis = new ArrayList<Pair<String,Double>>();
 		
 		for(GeoRouteList grList : allRoute) {
 			
@@ -105,7 +112,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 				
 			}
 			
-			allDis.add(new DistancePair<String, Double>(plate, dis));
+			allDis.add(new Pair<String, Double>(plate, dis));
 			//System.out.println(plate + " : " + dis + " Times: " + i);
 			
 		}
@@ -113,7 +120,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 		return allDis;
 		
 	}
-	
+	*/
 	public List<GeoRouteList> getAllRoute() throws Exception {
 		
 		List<GeoRouteList> allRoute = new ArrayList<GeoRouteList>();
@@ -132,7 +139,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 			
 			JSONArray ja = allJSON.getJSONArray(plate);
 			JSONObject jo;
-			GeoRouteList allRouteOfPlate = new GeoRouteList();
+			GeoRouteList allRouteOfPlate = new GeoRouteList(plate);
 			
 			for(int i = 0 ; i < ja.length() ; i++) {
 				
@@ -142,7 +149,7 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 					
 					if(checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
 						
-						GeoRoute gr = new GeoRoute(plate, meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng"));
+						GeoRoute gr = new GeoRoute(meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng"));
 						allRouteOfPlate.add(gr);
 						//gr.printGeoRoute();
 						
@@ -155,12 +162,13 @@ public List<DistancePair<String, Double>> calOccDis(List<GeoRouteList> allRoute)
 				lat = jo.getDouble("lat");
 				lng = jo.getDouble("lng");
 				
-			}  // End jo
+			}  // End for i
 			
 			allRoute.add(allRouteOfPlate);
 			
-		}  // End aj
+		}  // End for plate
 		
+		System.out.println("Get Route Complete :D");
 		return allRoute;
 
 	}
