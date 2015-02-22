@@ -1,16 +1,11 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -42,7 +37,7 @@ public class HttpsGetDataRTIC {
 	  			
 	  			try {
 	  				
-	  				List<String> carList = http.readCarList("carlist.txt");
+	  				List<String> carList = SharedMethod.readCarList("carlist.txt");
 		  			System.out.println("*****Start*****");
 		  			
 		  			for (String plate : carList) {
@@ -116,7 +111,7 @@ public class HttpsGetDataRTIC {
 	  	
 	  	return cookieName + "=" + value + "; Path=" + cookiePath;
 	}
-	
+	/*
 	public List<String> readCarList(String filename) throws Exception {
 		
 		List<String> carList = new ArrayList<String>();
@@ -142,5 +137,5 @@ public class HttpsGetDataRTIC {
         printer.close();
         writer.close();
 	}
-	
+	*/
 }

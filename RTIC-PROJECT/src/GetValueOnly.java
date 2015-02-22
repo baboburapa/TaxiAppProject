@@ -12,7 +12,7 @@ public class GetValueOnly {
 		
 		HttpsGetDataRTIC http = new HttpsGetDataRTIC();
 		
-		List<String> carList = http.readCarList("carlist.txt");
+		List<String> carList = SharedMethod.readCarList("carlist.txt");
 		int count = 0;
 		
 		for (String plate : carList) {
@@ -41,7 +41,7 @@ public class GetValueOnly {
 				
 				String print = lat + " " + lng + " " + date + " " + time;
 				System.out.println(print);
-				http. writeDataToFile("Only Value/" + plate + ".txt", print);
+				SharedMethod.writeDataToFile("Only Value/" + plate + ".txt", print);
 				count++;
 				line = br.readLine();
 				//System.out.println(line);

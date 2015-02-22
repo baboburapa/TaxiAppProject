@@ -2,29 +2,48 @@ public class GeoRoute {
 	
 	private int type;                         //Occupy = 1, Vacant = 0
 	private double dis;
-	
+	private long time;                     //In Seconds
+
 	private Pair<Double, Double> start;
 	private Pair<Double, Double>  end;	
-
-	private SimulationTaxi st = new SimulationTaxi();
 	
-	public GeoRoute(int type, double lat, double lng, double Nlat, double Nlng) {
+	private MyDate startTime;
+	private MyDate endTime;
+	
+	public GeoRoute(int type, double lat, double lng, double Nlat, double Nlng,String beginTime, String stopTime) {
 		
 		if (type == 0 || type == 1) {
 			
 			this.type = type;
-			this.dis = st.haversinDistance(lat, lng, Nlat, Nlng);
+			this.dis = SharedMethod.haversinDistance(lat, lng, Nlat, Nlng);
 			this.start = new Pair<Double, Double>(lat, lng);
 			this.end = new Pair<Double, Double>(Nlat, Nlng);
+			this.startTime = new MyDate(beginTime);
+			this.endTime = new MyDate(stopTime);
+			this.time = startTime.dateDiff(endTime, startTime, 0);
+			
+		}
+		
+	}
+	/**
+	 * Add Distance and Also Change End Point for same Type
+	 * @param gr
+	 */
+	public void addDistance(GeoRoute gr) {
+		
+		if(this.getType() == gr.getType()) {
+			
+			dis += gr.getDis();
+			time += gr.getTime();
+			end = gr.getEnd();
+			endTime = gr.getEndTime();
 			
 		}
 		
 	}
 	
-	public void addDistance(GeoRoute gr) {
-		
-		dis += gr.getDis();
-		
+	public long getTime() {
+		return time;
 	}
 	
 	public double getDis() {
@@ -43,16 +62,16 @@ public class GeoRoute {
 		return start;
 	}
 
-	public void setStart(Pair<Double, Double> start) {
-		this.start = start;
-	}
-
 	public Pair<Double, Double> getEnd() {
 		return end;
 	}
 
-	public void setEnd(Pair<Double, Double> end) {
-		this.end = end;
+	public MyDate getStartTime() {
+		return startTime;
+	}
+
+	public MyDate getEndTime() {
+		return endTime;
 	}
 	
 }

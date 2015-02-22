@@ -7,9 +7,14 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	private double totalDis = 0.0;
 	private double occDis = 0.0;
 	private double vacDis = 0.0;
+	private long time = 0;						//In Seconds
 	
-	//private SimulationTaxi st = new SimulationTaxi();
-	
+	private Pair<Double, Double> startPoint;
+	private Pair<Double, Double> endPoint;
+	private MyDate startTime;
+	private MyDate endTime;
+	private int pointer = 0;
+
 	private static final long serialVersionUID = 1L;
 
 	public GeoRouteList(String plate) {
@@ -21,8 +26,39 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	
 	public void print() { 
 		
-		System.out.println("Plate: " + plate + "\t \t TotalDiatance: " + totalDis + "\t \t OccupyDiatance: " + occDis + "\t \t VacantDiatance: " + vacDis);
+		System.out.println("Plate: " + plate + "\t TotalDistance: " + totalDis + " km\t OccupiedDistance: " + occDis + 
+									" km\t VacantDistance: " + vacDis + " km\t Time: " + (time/60/60) + " hours " + ((time/60)%60) + " minutes");
 		  		 
+	}
+	
+	public void findPassenger() {
+		
+		for(int i = pointer; i < this.size() ; i++) {
+			
+			GeoRoute gr = this.get(i);
+			
+			if(gr.getType() == 1) {
+				
+				startPoint = gr.getStart();
+				endPoint = gr.getEnd();
+				startTime = gr.getStartTime();
+				endTime = gr.getEndTime();
+				pointer = i;
+				
+			}
+			
+		}
+		
+	}
+	
+	public void reset() {
+		
+		startPoint = (this.get(0)).getStart();
+		endPoint = (this.get(0)).getEnd();
+		startTime = (this.get(0)).getStartTime();
+		endTime = (this.get(0)).getEndTime();
+		pointer = 0;
+		
 	}
 	
 	@ Override
@@ -31,6 +67,10 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		if (this.isEmpty()) {
 			
 			super.add(gr);
+			startPoint = gr.getStart();
+			endPoint = gr.getEnd();
+			startTime = gr.getStartTime();
+			endTime = gr.getEndTime();
 			
 		}
 		
@@ -41,7 +81,6 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 			if(temp.getType() == gr.getType()) {
 				
 				temp.addDistance(gr);
-				temp.setEnd(gr.getEnd());
 				super.add(this.size() - 1, temp);
 				
 			}
@@ -55,6 +94,7 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		}
 		
 		totalDis += gr.getDis();
+		time += gr.getTime();
 		if(gr.getType() == 0) vacDis += gr.getDis();
 		if(gr.getType() == 1) occDis += gr.getDis();
 		
@@ -78,4 +118,28 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		return vacDis;
 	}
 
+	public Pair<Double, Double> getStartPoint() {
+		return startPoint;
+	}
+	
+	public Pair<Double, Double> getEndPoint() {
+		return endPoint;
+	}
+
+	public int getPointer() {
+		return pointer;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public MyDate getStartTime() {
+		return startTime;
+	}
+
+	public MyDate getEndTime() {
+		return endTime;
+	}
+	
 }

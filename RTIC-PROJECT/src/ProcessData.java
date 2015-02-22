@@ -28,7 +28,10 @@ public class ProcessData {
 		
 		ProcessData pd = new ProcessData();
 		
-		List<GeoRouteList> allRoute = pd.getAllRoute();
+		//List<String> carList = SharedMethod.readCarList("carlist.txt");
+		
+		List<GeoRouteList> allRoute = pd.getAllRoute("2014-12-20 00:00:00", "2014-12-20 23:59:59");
+		List<GeoRouteList> allRouteSim = allRoute;
 		
 		for(GeoRouteList grl : allRoute) {
 			
@@ -36,15 +39,35 @@ public class ProcessData {
 			
 		}
 		
+		for(GeoRouteList grl : allRouteSim) {
+			
+			grl.findPassenger();
+			
+		}
+		
+		MyDate firstEnd = null;;
+		
+		for(GeoRouteList grl : allRouteSim) {
+			
+			if(firstEnd == null) firstEnd = grl.getEndTime();
+			
+			else {
+				
+				if(firstEnd.after(grl.getEndTime())) ;
+				
+			}
+			
+		}
+		
 	}
 
-	public List<GeoRouteList> getAllRoute() throws Exception {
+	public List<GeoRouteList> getAllRoute(String start, String end) throws Exception {
 		
 		List<GeoRouteList> allRoute = new ArrayList<GeoRouteList>();
 		
-		List<String> carList = http.readCarList("carlist.txt");
+		List<String> carList = SharedMethod.readCarList("carlist.txt");
 		
-		JSONObject allJSON = getAllJSON(carList);
+		JSONObject allJSON = getAllJSONInRange(carList, new MyDate(start), new MyDate(end));
 		
 		double lat = -1;
 		double lng = -1;
@@ -63,9 +86,9 @@ public class ProcessData {
 				
 				if(before != null && before.dateDiff(before, new MyDate(jo.getString("update_time")), 1) < 5) {
 					
-					if(checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
+					if(SharedMethod.checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
 						
-						GeoRoute gr = new GeoRoute(meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng"));
+						GeoRoute gr = new GeoRoute(meter, lat, lng, jo.getDouble("lat"), jo.getDouble("lng"), before.toString(), jo.getString("update_time"));
 						allRouteOfPlate.add(gr);
 						//gr.printGeoRoute();
 						
@@ -87,26 +110,6 @@ public class ProcessData {
 		System.out.println("Get Route Complete :D");
 		return allRoute;
 
-	}
-	
-	public boolean checkValidLatLng(double lat0, double lng0, double lat1, double lng1) {
-		
-		if(lat0 != lat1 || lng0 != lng1) {
-			
-        	if(lat0 > 13.495060 && lat0 < 13.956429 && lng0 > 100.329752 && lng0 < 100.936369) {
-        		
-	        	if(lat1 > 13.495060 && lat1 < 13.956429 && lng1 > 100.329752 && lng1 < 100.936369) {
-	        		
-	        		return true;
-	        		
-	        	}
-	        	
-        	}
-        	
-		}
-		
-		return false;
-		
 	}
 	
 	/*
@@ -137,7 +140,7 @@ public class ProcessData {
 	
 	public void getOccupyPoint() throws Exception {
 		
-		List<String> carList = http.readCarList("carlist.txt");
+		List<String> carList = SharedMethod.readCarList("carlist.txt");
 		int allCount = 0;
 		long allData = 0;
 		
@@ -175,7 +178,7 @@ public class ProcessData {
 				}
 				else if(state.equals("vacant") && meter.equals("1") && acc.equals("0")) {
 					state = "occupy";
-					http. writeDataToFile("result/" + plate + ".txt", infor);
+					SharedMethod.writeDataToFile("result/" + plate + ".txt", infor);
 					count++;
 					System.out.println(infor);
 				}
@@ -185,18 +188,18 @@ public class ProcessData {
 				line = br.readLine();
 			}
 			br.close();
-			http. writeDataToFile("result/" + "Conclusion.txt", plate +  ": " + count);
+			SharedMethod.writeDataToFile("result/" + "Conclusion.txt", plate +  ": " + count);
 			allCount += count;
 			System.out.println("*****END*****");
 		}
 		
-		http. writeDataToFile("result/" + "Conclusion.txt", "AllCount: " + allCount);
-		http. writeDataToFile("result/" + "Conclusion.txt", "AllData: " + allData);
+		SharedMethod.writeDataToFile("result/" + "Conclusion.txt", "AllCount: " + allCount);
+		SharedMethod.writeDataToFile("result/" + "Conclusion.txt", "AllData: " + allData);
 		System.out.println("All Count = " + allCount);
 		System.out.println("All Data = " + allData);
 		
 	}
-	
+	/*
 	public JSONObject getAllJSON(List<String> carList) throws Exception {
 		
 		JSONObject allJSON = new JSONObject();
@@ -238,8 +241,8 @@ public class ProcessData {
 			return allJSON;
 		
 	}
-	
-public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
+	*/
+	public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
 		
 		JSONObject allJSON = new JSONObject();
 		
