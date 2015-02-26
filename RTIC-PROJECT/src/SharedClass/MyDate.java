@@ -3,8 +3,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 /**
  * DateFormat = "yyyy-MM-dd HH:mm:ss"
  **/
@@ -31,26 +29,18 @@ public class MyDate {
 		
 	}
 	
-	/**
-	 * Seconds Mode = 0, Minutes Mode = 1, Hours Mode = 2, Days Mode = 3, Default Mode = Minutes Mode
-	 **/
-	public long dateDiff(MyDate after, MyDate before, int mode) {
+	public MyDate addADay() {
 		
-		long diff = 0;
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		String output = sdf.format(cal.getTime());
 		
-		diff = after.getTime() - before.getTime();         //diff in mS
-		
-		if(mode == 0)					return diff / 1000;											//Seconds Mode
-		else if(mode == 1)		return diff / (60 * 1000);								//Minutes Mode
-		else if(mode == 2)		return diff / (60 * 60 * 1000);						//Hours Mode
-		else if(mode == 3)		return diff / (24 * 60 * 60 * 1000);				//Days Mode
-		else 								return diff / (60 * 1000);								//Default Mode = Minutes Mode
+		return new MyDate(output);
 		
 	}
 	
-	public boolean isEqual(MyDate date1, MyDate date2) {
+	public boolean isEqual(MyDate checkDate) {
 		
-		if((date1.toString()).equals(date2.toString())) return true;
+		if(date.equals(checkDate.toString())) return true;
 		
 		return false;
 		
@@ -64,25 +54,34 @@ public class MyDate {
 		
 	}
 	
+	/**
+	 * start <= MyDate <= end
+	 */
 	public boolean isBetween(MyDate start, MyDate end) {
 		
-		if(after(start) && before(end)) return true;
+		if((isAfter(start) && isBefore(end))) return true;
 		
 		return false;
 		
 	}
 	
-	public boolean before(MyDate before) {
+	/**
+	 * Is MyDate before or equal checkDate
+	 */
+	public boolean isBefore(MyDate checkDate) {
 		
-		if(date.before(before.getDate())) return true;
+		if(date.before(checkDate.getDate()) || isEqual(checkDate)) return true;
 		
 		return false;
 		
 	}
 	
-	public boolean after(MyDate after) {
+	/**
+	 * Is MyDate after or equal checkDate
+	 */
+	public boolean isAfter(MyDate checkDate) {
 		
-		if(date.after(after.getDate())) return true;
+		if(date.after(checkDate.getDate()) || isEqual(checkDate)) return true;
 		
 		return false;
 		

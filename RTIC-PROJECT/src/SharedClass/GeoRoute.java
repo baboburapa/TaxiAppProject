@@ -20,11 +20,34 @@ public class GeoRoute {
 			this.end = new Pair<Double, Double>(Nlat, Nlng);
 			this.startTime = new MyDate(beginTime);
 			this.endTime = new MyDate(stopTime);
-			this.time = startTime.dateDiff(endTime, startTime, 0);
+			this.time = SharedMethod.dateDiff(endTime, startTime, 0);
+			if(time < 0) print();
 			
 		}
 		
 	}
+	
+	public boolean isEmptyGeoRoute() {
+		
+		if(type == 0 && dis == 0.0 && time == 0) return true;
+		
+		return false;
+		
+	}
+	
+	public void print() {
+		
+		System.out.println(toString());
+		
+	}
+	
+	public String toString() {
+		
+		return "Start: " + start.toString() + " " + startTime.toString() + " End: " + end.toString() + 
+					" " + endTime.toString() + " Type: " + type + " Distance: " + dis + " km";
+		
+	}
+	
 	/**
 	 * Add Distance and Also Change End Point for same Type
 	 * @param gr

@@ -1,10 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,58 +8,147 @@ import org.json.JSONObject;
 
 public class ProcessData {
 	
-	private final static String DBIP = "localhost";
+	//private final static String DBIP = "localhost";
 	//private final static String DBName = "taxi_project";
 	//private final static String DBPass = "123457890";
-	private final static String DBName = "root";
-	private final static String DBPass = "";
+	//private final static String DBName = "root";
+	//private final static String DBPass = "";
 	//private final static String DateFormat = "yyyy-MM-dd HH:mm:ss";
 	
-	HttpsGetDataRTIC http = new HttpsGetDataRTIC();
+	//HttpsGetDataRTIC http = new HttpsGetDataRTIC();
 	//Database DB = new Database("jdbc:mysql://" + DBIP + ":3306/", DBName, DBPass);
-	GoogleDirections gd = new GoogleDirections();
-	SimulationTaxi st = new SimulationTaxi();
+	//GoogleDirections gd = new GoogleDirections();
+	//SimulationTaxi st = new SimulationTaxi();
 
 	public static void main(String[] args) throws Exception {
 		
 		ProcessData pd = new ProcessData();
 		
-		//List<String> carList = SharedMethod.readCarList("carlist.txt");
+		String day = "2015-02-01";
+		//String start = "2014-12-17 00:00:00";
+		//String end = "2014-12-17 23:59:59";
 		
-		List<GeoRouteList> allRoute = pd.getAllRoute("2014-12-20 00:00:00", "2014-12-20 23:59:59");
-		List<GeoRouteList> allRouteSim = allRoute;
+		AllRoute allRoute = pd.getAllRouteInDay(day);
 		
+		int passengerCount = 0;
+		for(GeoRouteList grl : allRoute) passengerCount += grl.getPassengerIndex().size();
+		System.out.println("Raw: " + passengerCount + "Passengers");
 		for(GeoRouteList grl : allRoute) {
-			
+
+			SharedMethod.writeDataToFile("Raw Data/" + day + ".txt", grl.toString());
 			grl.print();
 			
 		}
 		
-		for(GeoRouteList grl : allRouteSim) {
-			
-			grl.findPassenger();
+		AllRoute result = pd.simulation(allRoute);
+		
+		int passengerCount2 = 0;
+		for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
+		System.out.println("Result: " + passengerCount2 + "Passengers");
+		for(GeoRouteList grl : result) {
+
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
+			grl.print();
 			
 		}
 		
-		MyDate firstEnd = null;;
+//		int passengerCount2 = 0;
+//		for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
+//		System.out.println(passengerCount);
+//		System.out.println(passengerCount2);
 		
-		for(GeoRouteList grl : allRouteSim) {
+		System.out.println("Compare Result: ");
+		
+		double active = 0;
+		double increase = 0;
+		double decrease = 0;
+		double increaseRate = 0;
+		double decreaseRate = 0;
+		
+		for(int i = 0 ; i < allRoute.size() ; i++) {
 			
-			if(firstEnd == null) firstEnd = grl.getEndTime();
+			GeoRouteList a = allRoute.get(i);
+			GeoRouteList r = result.get(i);
+			double real = a.getVacDis()/a.getTotalDis();
+			double sim = r.getVacDis()/r.getTotalDis();
+			double rate = 0.0;
 			
-			else {
+			String status = "equal";
+			if(real > sim) {
 				
-				if(firstEnd.after(grl.getEndTime())) ;
+				status = "increase";
+				increase++;
+				rate = ((real - sim) / real) * 100;
+				increaseRate += rate;
+				
+			}
+			else if(real < sim) {
+				
+				status = "decrease";
+				decrease++;
+				rate = ((sim - real) / real) * 100;
+				decreaseRate += rate;
 				
 			}
 			
+			if(r.getTotalDis() != 0) active++;
+			
+			String print = "Plate: " + a.getPlate() + "\tReal: " + real + "\tSim: " + sim + "\tStatus: " + status + "\tRate: " + rate + "%";
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", print);
+			System.out.println(print);
+			
+		} //End for
+		
+		String con = day + " --> " + "Taxi That Increase Ratio: " + (increase/active)*100 + "%" + "\tIncrease Average: " + (increaseRate/increase) + "%" + "\tDecrease Average: " + (decreaseRate/decrease) + "%";
+		SharedMethod.writeDataToFile("Sim Result/Conclusion.txt", con);
+		System.out.println(con);
+			
+	}
+	
+	public AllRoute simulation(AllRoute allRoute) throws Exception {
+		
+		List<String> carList = SharedMethod.readCarList("carlist.txt");
+		AllRoute result = new AllRoute();
+		
+		int passengerCount = 0;
+		for(GeoRouteList grl : allRoute) passengerCount += grl.getPassengerIndex().size();
+		
+		//Prepare result
+		for(int i = 0 ; i < carList.size() ; i++) {
+			
+			String plate = carList.get(i);
+			GeoRouteList grl = new GeoRouteList(plate);
+			if(allRoute.get(i).size() != 0) grl.add(allRoute.get(i).get(0));
+			result.add(grl);
+			
 		}
+		
+		Pair<String, GeoRoute> FPassGR;
+		
+		for(int i = 0 ; i < (passengerCount - 1) ; i++) {
+
+			FPassGR = allRoute.findFirstPassenger();
+			//System.out.println(FPassGR.toString());
+			result.findTaxi(FPassGR);
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public AllRoute getAllRouteInDay(String day) throws Exception {
+		
+		String start = day + " 00:00:00";
+		String end = day + " 23:59:59";
+		
+		return getAllRoute(start, end);
 		
 	}
 
-	public List<GeoRouteList> getAllRoute(String start, String end) throws Exception {
+	public AllRoute getAllRoute(String start, String end) throws Exception {
 		
-		List<GeoRouteList> allRoute = new ArrayList<GeoRouteList>();
+		AllRoute allRoute = new AllRoute();
 		
 		List<String> carList = SharedMethod.readCarList("carlist.txt");
 		
@@ -84,7 +169,7 @@ public class ProcessData {
 				
 				jo = ja.getJSONObject(i);
 				
-				if(before != null && before.dateDiff(before, new MyDate(jo.getString("update_time")), 1) < 5) {
+				if(before != null && SharedMethod.dateDiff(before, new MyDate(jo.getString("update_time")), 1) < 5) {
 					
 					if(SharedMethod.checkValidLatLng(lat, lng, jo.getDouble("lat"), jo.getDouble("lng"))) {
 						
@@ -107,37 +192,55 @@ public class ProcessData {
 			
 		}  // End for plate
 		
-		System.out.println("Get Route Complete :D");
+		System.out.println("Get Route Complete : D");
 		return allRoute;
 
 	}
-	
-	/*
-	public void sendOldDataToDB(String dbName) throws Exception {
-		
-		List<String> carList = http.readCarList("carlist.txt");
-		//SimpleDateFormat sdf = new SimpleDateFormat(DateFormat);
-		
-		for (String plate : carList) {
-			BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
-			String line = br.readLine();
-			
-			while(line != null) {
-				String infor = (line.substring(1, line.length() - 1)).trim();
-				try {
-					DB.insertJSON(dbName, plate, infor);
-				}catch(Exception e) {
-					DB.insertJSON(dbName, plate, infor);
-				}
 
-				line = br.readLine();
-			}
-			br.close();
-		}
+	public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
 		
-	}
-	*/
-	
+		JSONObject allJSON = new JSONObject();
+		
+			for (String plate : carList) {
+			
+				//System.out.println(plate);
+			
+				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
+				String line;
+				JSONArray temp = new JSONArray();
+			
+				while((line = br.readLine()) != null) {
+				
+					line = line.replaceAll("\\p{C}", "");
+					JSONArray  data;
+				
+					try{
+					
+						data = new JSONArray(line.trim());
+					
+					}catch(Exception e){
+					
+						System.out.println(plate +  ":" + line + e);
+						break;
+					
+					}
+					
+					JSONObject json = data.getJSONObject(0);
+					MyDate date = new MyDate(json.getString("update_time"));
+					if(date.isBetween(start, end)) temp.put(json);
+				
+				}  // End while
+			
+			
+				allJSON.put(plate, temp);
+		
+			}  // End for
+		
+			System.out.println("Get JSON Complete ^_^");
+			return allJSON;
+		
+	}  // End getAllJSONInRange
+	/*
 	public void getOccupyPoint() throws Exception {
 		
 		List<String> carList = SharedMethod.readCarList("carlist.txt");
@@ -199,91 +302,5 @@ public class ProcessData {
 		System.out.println("All Data = " + allData);
 		
 	}
-	/*
-	public JSONObject getAllJSON(List<String> carList) throws Exception {
-		
-		JSONObject allJSON = new JSONObject();
-		
-			for (String plate : carList) {
-			
-				//System.out.println(plate);
-			
-				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
-				String line;
-				JSONArray temp = new JSONArray();
-			
-				while((line = br.readLine()) != null) {
-				
-					line = line.replaceAll("\\p{C}", "");
-					JSONArray  data;
-				
-					try{
-					
-						data = new JSONArray(line.trim());
-					
-					}catch(Exception e){
-					
-						System.out.println(plate +  ":" + line + e);
-						break;
-					
-					}
-				
-					temp.put(data.getJSONObject(0));
-				
-				}  // End while
-			
-			
-				allJSON.put(plate, temp);
-		
-			}  // End for
-		
-			System.out.println("Get JSON Complete ^_^");
-			return allJSON;
-		
-	}
 	*/
-	public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
-		
-		JSONObject allJSON = new JSONObject();
-		
-			for (String plate : carList) {
-			
-				//System.out.println(plate);
-			
-				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
-				String line;
-				JSONArray temp = new JSONArray();
-			
-				while((line = br.readLine()) != null) {
-				
-					line = line.replaceAll("\\p{C}", "");
-					JSONArray  data;
-				
-					try{
-					
-						data = new JSONArray(line.trim());
-					
-					}catch(Exception e){
-					
-						System.out.println(plate +  ":" + line + e);
-						break;
-					
-					}
-					
-					JSONObject json = data.getJSONObject(0);
-					MyDate date = new MyDate(json.getString("update_time"));
-					if(date.isBetween(start, end)) temp.put(json);
-				
-				}  // End while
-			
-			
-				allJSON.put(plate, temp);
-		
-			}  // End for
-		
-			System.out.println("Get JSON Complete ^_^");
-			return allJSON;
-		
-	}
-	
 }  // End class

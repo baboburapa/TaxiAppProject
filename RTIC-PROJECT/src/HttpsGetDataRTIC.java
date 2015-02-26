@@ -112,30 +112,28 @@ public class HttpsGetDataRTIC {
 	  	return cookieName + "=" + value + "; Path=" + cookiePath;
 	}
 	/*
-	public List<String> readCarList(String filename) throws Exception {
+	public void sendOldDataToDB(String dbName) throws Exception {
 		
-		List<String> carList = new ArrayList<String>();
+		List<String> carList = http.readCarList("carlist.txt");
+		//SimpleDateFormat sdf = new SimpleDateFormat(DateFormat);
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename), FILE_ENCODE));
-		String line = br.readLine().substring(1);
-		while(line != null) {
-			carList.add(line);
-			line = br.readLine();
+		for (String plate : carList) {
+			BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
+			String line = br.readLine();
+			
+			while(line != null) {
+				String infor = (line.substring(1, line.length() - 1)).trim();
+				try {
+					DB.insertJSON(dbName, plate, infor);
+				}catch(Exception e) {
+					DB.insertJSON(dbName, plate, infor);
+				}
+
+				line = br.readLine();
+			}
+			br.close();
 		}
-		br.close();
 		
-		return carList;
-	}
-	
-	public void writeDataToFile(String filename, String Data) throws Exception {
-		
-		File file = new File(filename);
-	    FileWriter writer = new FileWriter(file, true);
-	    PrintWriter printer = new PrintWriter(writer);
-        printer.append(Data);
-        printer.println("");
-        printer.close();
-        writer.close();
 	}
 	*/
 }

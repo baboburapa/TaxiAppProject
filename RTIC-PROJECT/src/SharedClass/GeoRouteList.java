@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GeoRouteList extends ArrayList<GeoRoute> {
@@ -9,12 +10,14 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	private double vacDis = 0.0;
 	private long time = 0;						//In Seconds
 	
+	private List<Integer> passengerIndex = new ArrayList<Integer>();
+	private int passengerPointer = 0;
+	/*
 	private Pair<Double, Double> startPoint;
 	private Pair<Double, Double> endPoint;
 	private MyDate startTime;
 	private MyDate endTime;
-	private int pointer = 0;
-
+	*/
 	private static final long serialVersionUID = 1L;
 
 	public GeoRouteList(String plate) {
@@ -24,53 +27,92 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		
 	}
 	
+	public String toString() {
+		
+		return "Plate: " + plate + "\t TotalDistance: " + totalDis + " km\t OccupiedDistance: " + occDis + " km\t VacantDistance: " + 
+					vacDis + " km\t Time: " + (time/60/60) + " hours " + ((time/60)%60) + " minutes\t Passengers: " + passengerIndex.size();
+		
+	}
+	
 	public void print() { 
 		
-		System.out.println("Plate: " + plate + "\t TotalDistance: " + totalDis + " km\t OccupiedDistance: " + occDis + 
-									" km\t VacantDistance: " + vacDis + " km\t Time: " + (time/60/60) + " hours " + ((time/60)%60) + " minutes");
+		System.out.println(toString());
 		  		 
 	}
 	
-	public void findPassenger() {
+	public boolean isVacant(MyDate date) {
 		
-		for(int i = pointer; i < this.size() ; i++) {
+		for(GeoRoute gr : this) {
 			
-			GeoRoute gr = this.get(i);
-			
-			if(gr.getType() == 1) {
-				
-				startPoint = gr.getStart();
-				endPoint = gr.getEnd();
-				startTime = gr.getStartTime();
-				endTime = gr.getEndTime();
-				pointer = i;
-				
-			}
+			if(date.isBetween(gr.getStartTime(), gr.getEndTime()) && (gr.getType() == 0)) return true;
 			
 		}
 		
-	}
-	
-	public void reset() {
-		
-		startPoint = (this.get(0)).getStart();
-		endPoint = (this.get(0)).getEnd();
-		startTime = (this.get(0)).getStartTime();
-		endTime = (this.get(0)).getEndTime();
-		pointer = 0;
+		return false;
 		
 	}
 	
+	public Pair<Pair<Double, Double>, MyDate>  getCurrentPosition() {
+		
+		return new Pair<Pair<Double, Double>, MyDate>(get(size() - 1).getEnd(), get(size() - 1).getEndTime());
+		
+	}
+	
+	public Pair<Double, Double> getPosition(MyDate date) {
+		
+		GeoRoute temp = null;
+		
+		for(int i = 0 ; i < this.size() ; i++) {
+			
+			GeoRoute gr = this.get(i);
+			
+			if(date.isBetween(gr.getStartTime(), gr.getEndTime())) temp = gr;
+			
+		}
+		
+		return temp.getStart();
+		
+	}
+	
+	public GeoRoute getPassenger() {
+		
+		if(passengerPointer >= passengerIndex.size()) {
+			
+			return null;
+			
+		}
+		
+		int index = passengerIndex.get(passengerPointer);
+		
+		if(index == 0) {
+			
+			this.passengerPointer++;
+			if(passengerPointer >= passengerIndex.size()) {
+				
+				return null;
+				
+			}
+			index = passengerIndex.get(passengerPointer);
+			
+		}
+		
+		return this.get(index);
+		
+	}
+	
+	public void addPassengerPointer() {
+		
+		this.passengerPointer++;
+		
+	}
+
 	@ Override
 	public boolean add(GeoRoute gr) {
 		
 		if (this.isEmpty()) {
 			
 			super.add(gr);
-			startPoint = gr.getStart();
-			endPoint = gr.getEnd();
-			startTime = gr.getStartTime();
-			endTime = gr.getEndTime();
+			if(gr.getType() == 1) passengerIndex.add(0);
 			
 		}
 		
@@ -78,10 +120,17 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 			
 			GeoRoute temp = get(this.size() - 1);
 			
-			if(temp.getType() == gr.getType()) {
+			if(temp.getType() == gr.getType() && temp.getType() == 1) {
 				
 				temp.addDistance(gr);
 				super.add(this.size() - 1, temp);
+				
+			}
+			
+			else if(temp.getType() == 0 && gr.getType() == 1) {
+				
+				super.add(gr);
+				passengerIndex.add(this.size() - 1);
 				
 			}
 			
@@ -101,6 +150,10 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		return true;			
 		
 	}
+	
+	public List<Integer> getPassengerIndex() {
+		return passengerIndex;
+	}
 
 	public String getPlate() {
 		return plate;
@@ -118,28 +171,12 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		return vacDis;
 	}
 
-	public Pair<Double, Double> getStartPoint() {
-		return startPoint;
-	}
-	
-	public Pair<Double, Double> getEndPoint() {
-		return endPoint;
-	}
-
-	public int getPointer() {
-		return pointer;
-	}
-
 	public long getTime() {
 		return time;
 	}
 
-	public MyDate getStartTime() {
-		return startTime;
+	public int getPassengerPointer() {
+		return passengerPointer;
 	}
 
-	public MyDate getEndTime() {
-		return endTime;
-	}
-	
 }

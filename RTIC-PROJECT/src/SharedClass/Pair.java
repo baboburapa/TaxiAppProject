@@ -12,8 +12,14 @@ public class Pair<L,R> {
   
   public void print() {
   	
-  	System.out.println("<" + left.toString() + ", " + right.toString() + ">");
+  	System.out.println(toString());
   	
+  }
+  
+  public String toString() {
+	  
+	  return "<" + left.toString() + ", " + right.toString() + ">";
+	  
   }
 
   public L getLeft() { 
