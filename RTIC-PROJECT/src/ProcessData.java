@@ -3,8 +3,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class ProcessData {
 	
@@ -24,7 +24,7 @@ public class ProcessData {
 		
 		ProcessData pd = new ProcessData();
 		
-		String day = "2015-02-01";
+		String day = "2015-01-31";		
 		//String start = "2014-12-17 00:00:00";
 		//String end = "2014-12-17 23:59:59";
 		
@@ -33,9 +33,10 @@ public class ProcessData {
 		int passengerCount = 0;
 		for(GeoRouteList grl : allRoute) passengerCount += grl.getPassengerIndex().size();
 		System.out.println("Raw: " + passengerCount + "Passengers");
+		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
 		for(GeoRouteList grl : allRoute) {
 
-			SharedMethod.writeDataToFile("Raw Data/" + day + ".txt", grl.toString());
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
 			grl.print();
 			
 		}
@@ -45,6 +46,7 @@ public class ProcessData {
 		int passengerCount2 = 0;
 		for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
 		System.out.println("Result: " + passengerCount2 + "Passengers");
+		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
 		for(GeoRouteList grl : result) {
 
 			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
@@ -58,6 +60,7 @@ public class ProcessData {
 //		System.out.println(passengerCount2);
 		
 		System.out.println("Compare Result: ");
+		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
 		
 		double active = 0;
 		double increase = 0;
@@ -199,19 +202,24 @@ public class ProcessData {
 
 	public JSONObject getAllJSONInRange(List<String> carList, MyDate start, MyDate end) throws Exception {
 		
+//		File folder = new File("data/");
+//		File[] listOfFiles = folder.listFiles();
+		
 		JSONObject allJSON = new JSONObject();
 		
 			for (String plate : carList) {
-			
+			//for(File plate : listOfFiles){
 				//System.out.println(plate);
-			
-				BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/" + plate + ".txt"), "UTF-8"));
+				
+				FileInputStream fis = new FileInputStream("data/" + plate + ".txt");
+				BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 				String line;
 				JSONArray temp = new JSONArray();
 			
 				while((line = br.readLine()) != null) {
-				
+
 					line = line.replaceAll("\\p{C}", "");
+					//System.out.println(plate + "   " + line);
 					JSONArray  data;
 				
 					try{
@@ -220,7 +228,7 @@ public class ProcessData {
 					
 					}catch(Exception e){
 					
-						System.out.println(plate +  ":" + line + e);
+						System.out.println(plate +  ": " + line + e);
 						break;
 					
 					}
@@ -230,10 +238,11 @@ public class ProcessData {
 					if(date.isBetween(start, end)) temp.put(json);
 				
 				}  // End while
-			
-			
+				
+				br.close();
+				//String t = plate.getName().substring(0, plate.getName().indexOf("."));
 				allJSON.put(plate, temp);
-		
+				
 			}  // End for
 		
 			System.out.println("Get JSON Complete ^_^");

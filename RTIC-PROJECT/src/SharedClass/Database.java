@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.json.JSONObject;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class Database {
     
@@ -35,7 +36,7 @@ public class Database {
 		
 		try{
 			
-        	JSONObject data = new JSONObject(JSON);
+        	JSONObject data = JSONObject.fromObject(JSON);
         	List<String> att = Arrays.asList(data.getNames(data));
         	
         	for(String tableAtt : att) {

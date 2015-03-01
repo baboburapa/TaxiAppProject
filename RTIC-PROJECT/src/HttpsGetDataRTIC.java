@@ -1,14 +1,16 @@
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
-
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
-
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
  
 public class HttpsGetDataRTIC {
 	
@@ -21,7 +23,31 @@ public class HttpsGetDataRTIC {
 	private final static String DBPass = "123457890";
 	
 	public static void main(String[] args) throws Exception {
-	  
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader( new FileInputStream("data/Á©-2148.txt"), "UTF-8"));
+		String line;
+		JSONArray temp = new JSONArray();
+		
+		while((line = br.readLine()) != null) {
+			line = line.replaceAll("\\p{C}", "");
+			//System.out.println(plate + "   " + line);
+			JSONArray  data = null;
+		
+			try{
+			
+				data = new JSONArray(line.trim());
+			
+			}catch(Exception e){
+			
+				System.out.println(line + e);
+			
+			}
+		
+			temp.put(data);
+		}
+		
+		System.out.println("Fin" + temp);
+	  /*
 	  		HttpsGetDataRTIC http = new HttpsGetDataRTIC();
 	  		CookieHandler.setDefault(new CookieManager());
 	  
@@ -60,7 +86,7 @@ public class HttpsGetDataRTIC {
 				}
 	  			
 	  		}
-	  
+	  */
 	}
  
 	private String requestData(String url, String cookie) throws Exception {
