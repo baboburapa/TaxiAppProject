@@ -1,0 +1,72 @@
+
+Plate: มฉ-2148	 TotalDistance: 295.25860259913657 km	 OccupiedDistance: 252.38725841967312 km	 VacantDistance: 42.87134417946362 km	 Time: 10 hours 5 minutes	 Passengers: 23
+Plate: มฎ-1504	 TotalDistance: 55.770710224195916 km	 OccupiedDistance: 55.770710224195916 km	 VacantDistance: 0.0 km	 Time: 1 hours 56 minutes	 Passengers: 1
+Plate: ทล-6000	 TotalDistance: 267.52040998066786 km	 OccupiedDistance: 164.7368794495922 km	 VacantDistance: 102.78353053107566 km	 Time: 7 hours 34 minutes	 Passengers: 17
+Plate: ทล-6337	 TotalDistance: 383.14462763088824 km	 OccupiedDistance: 338.17953455129367 km	 VacantDistance: 44.96509307959457 km	 Time: 9 hours 27 minutes	 Passengers: 18
+Plate: ทล-7000	 TotalDistance: 201.60151145578072 km	 OccupiedDistance: 129.0221318724339 km	 VacantDistance: 72.57937958334674 km	 Time: 9 hours 7 minutes	 Passengers: 16
+Plate: ทว-3377	 TotalDistance: 279.63697256383045 km	 OccupiedDistance: 198.66815231221182 km	 VacantDistance: 80.96882025161867 km	 Time: 9 hours 1 minutes	 Passengers: 27
+Plate: ทว-3600	 TotalDistance: 316.26380594859097 km	 OccupiedDistance: 230.00088141262495 km	 VacantDistance: 86.2629245359659 km	 Time: 5 hours 59 minutes	 Passengers: 11
+Plate: ทว-3736	 TotalDistance: 187.31806706421304 km	 OccupiedDistance: 138.57158572388107 km	 VacantDistance: 48.746481340331854 km	 Time: 6 hours 15 minutes	 Passengers: 13
+Plate: ทษ-6000	 TotalDistance: 262.8527337081397 km	 OccupiedDistance: 122.25250336740498 km	 VacantDistance: 140.6002303407344 km	 Time: 7 hours 14 minutes	 Passengers: 15
+Plate: ทษ-6776	 TotalDistance: 0.0 km	 OccupiedDistance: 0.0 km	 VacantDistance: 0.0 km	 Time: 0 hours 0 minutes	 Passengers: 0
+Plate: ทษ-8200	 TotalDistance: 539.2471909392365 km	 OccupiedDistance: 380.9964832180392 km	 VacantDistance: 158.2507077211969 km	 Time: 10 hours 21 minutes	 Passengers: 23
+Plate: ทษ-8886	 TotalDistance: 198.66904083088008 km	 OccupiedDistance: 173.38802253440338 km	 VacantDistance: 25.281018296476805 km	 Time: 4 hours 52 minutes	 Passengers: 4
+Plate: ทศ-9	 TotalDistance: 226.65565056474867 km	 OccupiedDistance: 144.89164710325898 km	 VacantDistance: 81.76400346148932 km	 Time: 9 hours 24 minutes	 Passengers: 24
+Plate: ทศ-1166	 TotalDistance: 148.7494294622733 km	 OccupiedDistance: 115.47674549618458 km	 VacantDistance: 33.27268396608876 km	 Time: 3 hours 18 minutes	 Passengers: 6
+Plate: ทศ-8600	 TotalDistance: 269.2897465655904 km	 OccupiedDistance: 219.38838336398882 km	 VacantDistance: 49.90136320160153 km	 Time: 8 hours 37 minutes	 Passengers: 17
+Plate: ทส-600	 TotalDistance: 263.1333946382599 km	 OccupiedDistance: 215.12780741246277 km	 VacantDistance: 48.00558722579713 km	 Time: 5 hours 0 minutes	 Passengers: 5
+Plate: ทส-2211	 TotalDistance: 500.184842837618 km	 OccupiedDistance: 373.1849524663855 km	 VacantDistance: 126.99989037123231 km	 Time: 10 hours 5 minutes	 Passengers: 29
+Plate: ทส-2400	 TotalDistance: 316.7843410764508 km	 OccupiedDistance: 234.80376086681972 km	 VacantDistance: 81.98058020963116 km	 Time: 10 hours 7 minutes	 Passengers: 28
+Plate: ทส-2500	 TotalDistance: 492.6740445371725 km	 OccupiedDistance: 327.47778182639036 km	 VacantDistance: 165.19626271078232 km	 Time: 13 hours 43 minutes	 Passengers: 38
+Plate: ทส-2729	 TotalDistance: 283.4549759336484 km	 OccupiedDistance: 175.19859071770134 km	 VacantDistance: 108.25638521594699 km	 Time: 8 hours 51 minutes	 Passengers: 24
+Plate: ทส-2773	 TotalDistance: 0.0 km	 OccupiedDistance: 0.0 km	 VacantDistance: 0.0 km	 Time: 0 hours 0 minutes	 Passengers: 0
+Plate: ทส-2900	 TotalDistance: 613.1752222825726 km	 OccupiedDistance: 405.3934314914545 km	 VacantDistance: 207.78179079111865 km	 Time: 16 hours 59 minutes	 Passengers: 44
+Plate: ทส-3232	 TotalDistance: 444.37843352203515 km	 OccupiedDistance: 305.4700530444931 km	 VacantDistance: 138.90838047754184 km	 Time: 13 hours 38 minutes	 Passengers: 36
+
+Plate: มฉ-2148	 TotalDistance: 318.6611378512819 km	 OccupiedDistance: 217.811802902191 km	 VacantDistance: 100.84933494909099 km	 Time: 12 hours 56 minutes	 Passengers: 23
+Plate: มฎ-1504	 TotalDistance: 55.770710224195916 km	 OccupiedDistance: 55.770710224195916 km	 VacantDistance: 0.0 km	 Time: 1 hours 56 minutes	 Passengers: 1
+Plate: ทล-6000	 TotalDistance: 156.14905617466297 km	 OccupiedDistance: 107.5147872386902 km	 VacantDistance: 48.63426893597279 km	 Time: 7 hours 7 minutes	 Passengers: 13
+Plate: ทล-6337	 TotalDistance: 345.14596753585704 km	 OccupiedDistance: 322.5333066044685 km	 VacantDistance: 22.61266093138838 km	 Time: 9 hours 21 minutes	 Passengers: 17
+Plate: ทล-7000	 TotalDistance: 295.48962739184594 km	 OccupiedDistance: 230.84091354475615 km	 VacantDistance: 64.64871384708988 km	 Time: 10 hours 33 minutes	 Passengers: 17
+Plate: ทว-3377	 TotalDistance: 273.99990377523136 km	 OccupiedDistance: 216.25988659856273 km	 VacantDistance: 57.740017176668765 km	 Time: 13 hours 29 minutes	 Passengers: 31
+Plate: ทว-3600	 TotalDistance: 248.1253711943388 km	 OccupiedDistance: 173.6620420857841 km	 VacantDistance: 74.4633291085547 km	 Time: 7 hours 52 minutes	 Passengers: 21
+Plate: ทว-3736	 TotalDistance: 241.9810477080206 km	 OccupiedDistance: 215.16490234242366 km	 VacantDistance: 26.816145365596917 km	 Time: 7 hours 40 minutes	 Passengers: 16
+Plate: ทษ-6000	 TotalDistance: 286.34567462200147 km	 OccupiedDistance: 206.6648170408222 km	 VacantDistance: 79.68085758117924 km	 Time: 10 hours 55 minutes	 Passengers: 29
+Plate: ทษ-6776	 TotalDistance: 0.0 km	 OccupiedDistance: 0.0 km	 VacantDistance: 0.0 km	 Time: 0 hours 0 minutes	 Passengers: 0
+Plate: ทษ-8200	 TotalDistance: 326.62299533250865 km	 OccupiedDistance: 292.742921467567 km	 VacantDistance: 33.88007386494168 km	 Time: 10 hours 14 minutes	 Passengers: 18
+Plate: ทษ-8886	 TotalDistance: 337.49660987444855 km	 OccupiedDistance: 250.72175073491306 km	 VacantDistance: 86.77485913953545 km	 Time: 12 hours 31 minutes	 Passengers: 26
+Plate: ทศ-9	 TotalDistance: 341.4323649348817 km	 OccupiedDistance: 276.3287391553195 km	 VacantDistance: 65.10362577956215 km	 Time: 14 hours 9 minutes	 Passengers: 35
+Plate: ทศ-1166	 TotalDistance: 117.19535208966552 km	 OccupiedDistance: 112.26778956258896 km	 VacantDistance: 4.9275625270765815 km	 Time: 3 hours 1 minutes	 Passengers: 5
+Plate: ทศ-8600	 TotalDistance: 232.26696864191373 km	 OccupiedDistance: 195.9908791296929 km	 VacantDistance: 36.27608951222084 km	 Time: 8 hours 51 minutes	 Passengers: 18
+Plate: ทส-600	 TotalDistance: 349.73779192360973 km	 OccupiedDistance: 222.03212961731242 km	 VacantDistance: 127.70566230629731 km	 Time: 16 hours 51 minutes	 Passengers: 22
+Plate: ทส-2211	 TotalDistance: 279.5033720400113 km	 OccupiedDistance: 230.6534657907888 km	 VacantDistance: 48.849906249222435 km	 Time: 7 hours 22 minutes	 Passengers: 13
+Plate: ทส-2400	 TotalDistance: 235.9494346391791 km	 OccupiedDistance: 176.36101214285236 km	 VacantDistance: 59.588422496326785 km	 Time: 11 hours 31 minutes	 Passengers: 20
+Plate: ทส-2500	 TotalDistance: 291.3624721146965 km	 OccupiedDistance: 225.12264733572394 km	 VacantDistance: 66.2398247789727 km	 Time: 11 hours 26 minutes	 Passengers: 31
+Plate: ทส-2729	 TotalDistance: 474.61513010031985 km	 OccupiedDistance: 409.56434936633906 km	 VacantDistance: 65.05078073398073 km	 Time: 14 hours 4 minutes	 Passengers: 27
+Plate: ทส-2773	 TotalDistance: 0.0 km	 OccupiedDistance: 0.0 km	 VacantDistance: 0.0 km	 Time: 0 hours 0 minutes	 Passengers: 0
+Plate: ทส-2900	 TotalDistance: 222.52254747217808 km	 OccupiedDistance: 175.44014392714854 km	 VacantDistance: 47.08240354502954 km	 Time: 6 hours 50 minutes	 Passengers: 2
+Plate: ทส-3232	 TotalDistance: 481.91258643631033 km	 OccupiedDistance: 386.93830006275294 km	 VacantDistance: 94.97428637355728 km	 Time: 20 hours 7 minutes	 Passengers: 34
+
+Plate: มฉ-2148	Real: 0.14519930597134442	Sim: 0.31647829926521204	Status: decrease	Rate: 117.96130301591808%
+Plate: มฎ-1504	Real: 0.0	Sim: 0.0	Status: equal	Rate: 0.0%
+Plate: ทล-6000	Real: 0.3842081826149385	Sim: 0.3114605373059198	Status: increase	Rate: 18.93443414294169%
+Plate: ทล-6337	Real: 0.11735801532081716	Sim: 0.06551622518678032	Status: increase	Rate: 44.17405150582932%
+Plate: ทล-7000	Real: 0.36001406467265645	Sim: 0.21878505319362648	Status: increase	Rate: 39.228748356662884%
+Plate: ทว-3377	Real: 0.28954976700420604	Sim: 0.2107300637011693	Status: increase	Rate: 27.221470118431068%
+Plate: ทว-3600	Real: 0.2727562336045119	Sim: 0.30010364820868285	Status: decrease	Rate: 10.026320661042657%
+Plate: ทว-3736	Real: 0.2602337409536767	Sim: 0.11081919687344208	Status: increase	Rate: 57.41551557944648%
+Plate: ทษ-6000	Real: 0.5349011530420331	Sim: 0.27826806773444074	Status: increase	Rate: 47.977665377630224%
+Plate: ทษ-6776	Real: NaN	Sim: NaN	Status: equal	Rate: 0.0%
+Plate: ทษ-8200	Real: 0.2934659843949543	Sim: 0.103728379045851	Status: increase	Rate: 64.65403673283967%
+Plate: ทษ-8886	Real: 0.12725192707804756	Sim: 0.2571132764024397	Status: decrease	Rate: 102.05059546543774%
+Plate: ทศ-9	Real: 0.3607410768615796	Sim: 0.1906779569417175	Status: increase	Rate: 47.14271005658644%
+Plate: ทศ-1166	Real: 0.22368276696165465	Sim: 0.04204571631225213	Status: increase	Rate: 81.20297022279776%
+Plate: ทศ-8600	Real: 0.18530732728602847	Sim: 0.15618273112328657	Status: increase	Rate: 15.716915563617759%
+Plate: ทส-600	Real: 0.18243821652433112	Sim: 0.36514687647536526	Status: decrease	Rate: 100.14823836357058%
+Plate: ทส-2211	Real: 0.25390591536269735	Sim: 0.1747739424132225	Status: increase	Rate: 31.16586426765091%
+Plate: ทส-2400	Real: 0.2587898755697854	Sim: 0.2525474264748766	Status: increase	Rate: 2.4121689773081734%
+Plate: ทส-2500	Real: 0.3353053901306509	Sim: 0.22734508084794466	Status: increase	Rate: 32.197606259964914%
+Plate: ทส-2729	Real: 0.3819173922044248	Sim: 0.1370600653212022	Status: increase	Rate: 64.11264107924167%
+Plate: ทส-2773	Real: NaN	Sim: NaN	Status: equal	Rate: 0.0%
+Plate: ทส-2900	Real: 0.3388620140547126	Sim: 0.2115848667017271	Status: increase	Rate: 37.56016964841487%
+Plate: ทส-3232	Real: 0.31259028341359385	Sim: 0.19707782914715197	Status: increase	Rate: 36.95330929835885%
