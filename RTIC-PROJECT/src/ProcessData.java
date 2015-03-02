@@ -26,8 +26,8 @@ public class ProcessData {
 		
 		//String start = "2014-12-17 00:00:00";
 		//String end = "2014-12-17 23:59:59";
-		MyDate date = new MyDate("2014-12-23 00:00:00");
-		int range = 1;
+		MyDate date = new MyDate("2015-01-30 00:00:00");
+		int range = 22;
 		
 		for(int j = 0 ; j < range ; j++) {
 			
