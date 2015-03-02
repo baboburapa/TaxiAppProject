@@ -110,10 +110,10 @@ public class MyDate {
 	public String  getDay() {
 		
 		int day = cal.get(Calendar.DATE);
-		int month = cal.get(Calendar.MONTH);
+		int month = cal.get(Calendar.MONTH);     // Month in Java is 0-11
 		int year = cal.get(Calendar.YEAR);
 		
-		return year + "-" + month + "-" + day;
+		return year + "-" + (month + 1) + "-" + day;
 		
 	}
 	

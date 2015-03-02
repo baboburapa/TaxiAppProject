@@ -8,16 +8,13 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	private double totalDis = 0.0;
 	private double occDis = 0.0;
 	private double vacDis = 0.0;
-	private long time = 0;						//In Seconds
+	private long totalTime = 0;						//In Seconds
+	private long occTime = 0;						//In Seconds
+	private long vacTime = 0;						//In Seconds
 	
 	private List<Integer> passengerIndex = new ArrayList<Integer>();
 	private int passengerPointer = 0;
-	/*
-	private Pair<Double, Double> startPoint;
-	private Pair<Double, Double> endPoint;
-	private MyDate startTime;
-	private MyDate endTime;
-	*/
+
 	private static final long serialVersionUID = 1L;
 
 	public GeoRouteList(String plate) {
@@ -29,8 +26,9 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 	
 	public String toString() {
 		
-		return "Plate: " + plate + "\t TotalDistance: " + totalDis + " km\t OccupiedDistance: " + occDis + " km\t VacantDistance: " + 
-					vacDis + " km\t Time: " + (time/60/60) + " hours " + ((time/60)%60) + " minutes\t Passengers: " + passengerIndex.size();
+		return "Plate: " + plate + " \t Passengers: " + passengerIndex.size() + 
+				"\n TotalDistance: " + totalDis + " km\t OccupiedDistance: " + occDis + " km\t VacantDistance: " + vacDis + " km" + 
+				"\n TotalTime: " + (totalTime/60) + " minutes\t OccupiedTime: " + (occTime/60) + " minutes\t VacantTime: " + (vacTime/60) + " minutes";
 		
 	}
 	
@@ -143,9 +141,19 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		}
 		
 		totalDis += gr.getDis();
-		time += gr.getTime();
-		if(gr.getType() == 0) vacDis += gr.getDis();
-		if(gr.getType() == 1) occDis += gr.getDis();
+		totalTime += gr.getTime();
+		if(gr.getType() == 0) {
+			
+			vacDis += gr.getDis();
+			vacTime += gr.getTime();
+			
+		}
+		if(gr.getType() == 1) {
+			
+			occDis += gr.getDis();
+			occTime += gr.getTime();
+			
+		}
 		
 		return true;			
 		
@@ -171,8 +179,16 @@ public class GeoRouteList extends ArrayList<GeoRoute> {
 		return vacDis;
 	}
 
-	public long getTime() {
-		return time;
+	public long getTotalTime() {
+		return totalTime;
+	}
+
+	public long getOccTime() {
+		return occTime;
+	}
+
+	public long getVacTime() {
+		return vacTime;
 	}
 
 	public int getPassengerPointer() {

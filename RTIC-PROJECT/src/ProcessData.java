@@ -24,89 +24,127 @@ public class ProcessData {
 		
 		ProcessData pd = new ProcessData();
 		
-		String day = "2015-01-31";		
 		//String start = "2014-12-17 00:00:00";
 		//String end = "2014-12-17 23:59:59";
+		MyDate date = new MyDate("2014-12-23 00:00:00");
+		int range = 1;
 		
-		AllRoute allRoute = pd.getAllRouteInDay(day);
-		
-		int passengerCount = 0;
-		for(GeoRouteList grl : allRoute) passengerCount += grl.getPassengerIndex().size();
-		System.out.println("Raw: " + passengerCount + "Passengers");
-		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
-		for(GeoRouteList grl : allRoute) {
-
-			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
-			grl.print();
+		for(int j = 0 ; j < range ; j++) {
 			
-		}
-		
-		AllRoute result = pd.simulation(allRoute);
-		
-		int passengerCount2 = 0;
-		for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
-		System.out.println("Result: " + passengerCount2 + "Passengers");
-		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
-		for(GeoRouteList grl : result) {
-
-			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
-			grl.print();
+			String day = date.getDay();
+			//System.out.println(day);
 			
-		}
-		
-//		int passengerCount2 = 0;
-//		for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
-//		System.out.println(passengerCount);
-//		System.out.println(passengerCount2);
-		
-		System.out.println("Compare Result: ");
-		SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
-		
-		double active = 0;
-		double increase = 0;
-		double decrease = 0;
-		double increaseRate = 0;
-		double decreaseRate = 0;
-		
-		for(int i = 0 ; i < allRoute.size() ; i++) {
+			AllRoute allRoute = pd.getAllRouteInDay(day);
 			
-			GeoRouteList a = allRoute.get(i);
-			GeoRouteList r = result.get(i);
-			double real = a.getVacDis()/a.getTotalDis();
-			double sim = r.getVacDis()/r.getTotalDis();
-			double rate = 0.0;
-			
-			String status = "equal";
-			if(real > sim) {
-				
-				status = "increase";
-				increase++;
-				rate = ((real - sim) / real) * 100;
-				increaseRate += rate;
-				
-			}
-			else if(real < sim) {
-				
-				status = "decrease";
-				decrease++;
-				rate = ((sim - real) / real) * 100;
-				decreaseRate += rate;
+			int passengerCount = 0;
+			for(GeoRouteList grl : allRoute) passengerCount += grl.getPassengerIndex().size();
+			System.out.println("Raw: " + passengerCount + "Passengers");
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
+			for(GeoRouteList grl : allRoute) {
+	
+				SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
+				grl.print();
 				
 			}
 			
-			if(r.getTotalDis() != 0) active++;
+			AllRoute result = pd.simulation(allRoute);
 			
-			String print = "Plate: " + a.getPlate() + "\tReal: " + real + "\tSim: " + sim + "\tStatus: " + status + "\tRate: " + rate + "%";
-			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", print);
-			System.out.println(print);
+			int passengerCount2 = 0;
+			for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
+			System.out.println("Result: " + passengerCount2 + "Passengers");
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
+			for(GeoRouteList grl : result) {
+	
+				SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", grl.toString());
+				grl.print();
+				
+			}
 			
-		} //End for
+			System.out.println("Compare Result: ");
+			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
+			
+			double active = 0;
+			double increase = 0;
+			double decrease = 0;
+			double increaseRate = 0;
+			double decreaseRate = 0;
+			double increaseTime = 0;
+			double decreaseTime = 0;
+			double increaseRateTime = 0;
+			double decreaseRateTime = 0;
+			
+			for(int i = 0 ; i < allRoute.size() ; i++) {
+				
+				GeoRouteList a = allRoute.get(i);
+				GeoRouteList r = result.get(i);
+				double real = a.getVacDis()/a.getTotalDis();
+				double sim = r.getVacDis()/r.getTotalDis();
+				double rate = 0.0;
+				double realTime = (double)a.getVacTime()/(double)a.getTotalTime();
+				double simTime = (double)r.getVacTime()/(double)r.getTotalTime();
+				double rateTime = 0.0;
+				
+				String status = "equal";
+				if(real > sim) {
+					
+					status = "increase";
+					increase++;
+					rate = ((real - sim) / real) * 100;
+					increaseRate += rate;
+					
+				}
+				else if(real < sim) {
+					
+					status = "decrease";
+					decrease++;
+					rate = ((sim - real) / real) * 100;
+					decreaseRate += rate;
+					
+				}
+				
+				String statusTime = "equal";
+				if(realTime > simTime) {
+					
+					statusTime = "increase";
+					increaseTime++;
+					rateTime = ((realTime - simTime) / realTime) * 100;
+					increaseRateTime += rateTime;
+					
+				}
+				else if(realTime < simTime) {
+					
+					statusTime = "decrease";
+					decreaseTime++;
+					rateTime = ((simTime - realTime) / realTime) * 100;
+					decreaseRateTime += rateTime;
+					
+				}
+				
+				if(r.getTotalDis() != 0) active++;
+				
+				String print = "Plate: " + a.getPlate() + 
+								"\n Real Distance Ratio: " + real + "\t Sim Distance Ratio: " + sim + 
+								"\n Real Time Ratio: " + realTime + "\t Sim Time Ratio: " + simTime + 
+								"\n Distance Status: " + status + "\t Distance Rate: " + rate + "%" + 
+								"\n Time Status: " + statusTime + "\t Time Rate: " + rateTime + "%";
+				SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", print);
+				System.out.println(print);
+				
+			} //End for
+			
+			String con = day + " --> " + 
+						"Taxi That Increase Distance Ratio: " + (increase/active)*100 + "%" + 
+						"\t Increase Distance Average: " + (increaseRate/increase) + "%" + "\t Decrease Distance Average: " + (decreaseRate/decrease) + "%" + 
+						"\n\t\t Taxi That Increase Time Ratio: " + (increaseTime/active)*100 + "%" + 
+						"\t Increase Time Average: " + (increaseRateTime/increaseTime) + "%" + "\t Decrease Time Average: " + (decreaseRateTime/decreaseTime) + "%";
+			SharedMethod.writeDataToFile("Sim Result/Conclusion.txt", con);
+			System.out.println("\n" + con);
+			
+			date.addADay();
+			
+		} // End for date loop
 		
-		String con = day + " --> " + "Taxi That Increase Ratio: " + (increase/active)*100 + "%" + "\tIncrease Average: " + (increaseRate/increase) + "%" + "\tDecrease Average: " + (decreaseRate/decrease) + "%";
-		SharedMethod.writeDataToFile("Sim Result/Conclusion.txt", con);
-		System.out.println(con);
-			
-	}
+	}  // End Main
 	
 	public AllRoute simulation(AllRoute allRoute) throws Exception {
 		

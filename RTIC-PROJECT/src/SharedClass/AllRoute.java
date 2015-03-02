@@ -40,7 +40,7 @@ public class AllRoute extends ArrayList<GeoRouteList> {
 			for(int i = 0 ; i < this.size() ; i++) {
 				
 				GeoRouteList grl  = this.get(i);
-				if(grl.getTotalDis() == 0l) continue;
+				if(grl.getTotalDis() == 0) continue;
 				
 				Pair<Pair<Double, Double>, MyDate> current = grl.getCurrentPosition();
 				//System.out.println(grl.getPlate());

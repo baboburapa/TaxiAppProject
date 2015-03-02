@@ -1,22 +1,8 @@
-2015-01-30 --> Taxi That Increase Ratio: 82.6086956521739%	Increase Average: 34.3553346935317%	Decrease Average: 27.70377275798288%
-2015-01-31 --> Taxi That Increase Ratio: 78.26086956521739%	Increase Average: 32.37982861626741%	Decrease Average: 44.911829773112586%
-2015-02-01 --> Taxi That Increase Ratio: 77.27272727272727%	Increase Average: 28.825924735984728%	Decrease Average: 21.194820266277453%
-2015-02-02 --> Taxi That Increase Ratio: 65.21739130434783%	Increase Average: 45.697261838388805%	Decrease Average: 117.35074708218403%
-2015-02-03 --> Taxi That Increase Ratio: 82.6086956521739%	Increase Average: 36.756609371750145%	Decrease Average: 33.81405775988726%
-2015-02-04 --> Taxi That Increase Ratio: 82.6086956521739%	Increase Average: 40.072114849354925%	Decrease Average: 21.768332852592238%
-2015-02-05 --> Taxi That Increase Ratio: 78.26086956521739%	Increase Average: 47.94283476707637%	Decrease Average: 10.250396662336861%
-2015-02-06 --> Taxi That Increase Ratio: 86.95652173913044%	Increase Average: 38.4354946015472%	Decrease Average: 71.5194180458383%
-2015-02-07 --> Taxi That Increase Ratio: 91.30434782608695%	Increase Average: 31.40709258323599%	Decrease Average: 21.286120006394057%
-2015-02-08 --> Taxi That Increase Ratio: 73.91304347826086%	Increase Average: 33.48316143003752%	Decrease Average: Infinity%
-2015-02-09 --> Taxi That Increase Ratio: 78.26086956521739%	Increase Average: 38.070749159073856%	Decrease Average: 30.838864384081674%
-2015-02-10 --> Taxi That Increase Ratio: 73.91304347826086%	Increase Average: 36.188868550878276%	Decrease Average: Infinity%
-2015-02-11 --> Taxi That Increase Ratio: 91.30434782608695%	Increase Average: 36.94646765757533%	Decrease Average: 302275.03129920573%
-2015-02-12 --> Taxi That Increase Ratio: 78.26086956521739%	Increase Average: 45.313731588118436%	Decrease Average: Infinity%
-2015-02-13 --> Taxi That Increase Ratio: 91.30434782608695%	Increase Average: 43.62123460339024%	Decrease Average: 18.762812579537602%
-2015-02-14 --> Taxi That Increase Ratio: 72.72727272727273%	Increase Average: 30.062083456087638%	Decrease Average: 34.51573573071702%
-2015-02-15 --> Taxi That Increase Ratio: 76.19047619047619%	Increase Average: 40.50439232423267%	Decrease Average: 82.54661437649227%
-2015-02-16 --> Taxi That Increase Ratio: 68.18181818181817%	Increase Average: 34.25621713164376%	Decrease Average: 295.1662076407652%
-2015-02-17 --> Taxi That Increase Ratio: 90.0%	Increase Average: 35.932324891799524%	Decrease Average: Infinity%
-2015-02-18 --> Taxi That Increase Ratio: 80.0%	Increase Average: 31.80594769143469%	Decrease Average: Infinity%
-2015-02-19 --> Taxi That Increase Ratio: 85.0%	Increase Average: 44.05389657604825%	Decrease Average: Infinity%
-2015-02-20 --> Taxi That Increase Ratio: 70.58823529411765%	Increase Average: 49.01745585195108%	Decrease Average: 29.028645289005897%
+2014-12-23 --> Taxi That Increase Distance Ratio: 87.5%	Increase Distance Average: 35.22867356364739%	Decrease Distance Average: 22.605633211832338%Taxi That Increase Time Ratio: 12.5%	Increase Time Average: 15.038856809491877%	Decrease Time Average: 42.217485303721%
+2014-12-24 --> Taxi That Increase Distance Ratio: 72.72727272727273%	Increase Distance Average: 47.4584969271654%	Decrease Distance Average: 25.089171923984477%Taxi That Increase Time Ratio: 27.27272727272727%	Increase Time Average: 6.170658811437303%	Decrease Time Average: 48.01207230632291%
+2014-12-23 --> Taxi That Increase Distance Ratio: 87.5%	Increase Distance Average: 35.22867356364739%	Decrease Distance Average: 22.605633211832338%Taxi That Increase Time Ratio: 12.5%	Increase Time Average: 15.038856809491877%	Decrease Time Average: 42.217485303721%
+2014-12-23 --> Taxi That Increase Distance Ratio: 87.5%	Increase Distance Average: 35.22867356364739%	Decrease Distance Average: 22.605633211832338%Taxi That Increase Time Ratio: 12.5%	Increase Time Average: 15.038856809491877%	Decrease Time Average: 42.217485303721%
+2014-12-23 --> Taxi That Increase Distance Ratio: 87.5%	 Increase Distance Average: 35.22867356364739%	 Decrease Distance Average: 22.605633211832338%
+ Taxi That Increase Time Ratio: 12.5%	 Increase Time Average: 15.038856809491877%	 Decrease Time Average: 42.217485303721%
+2014-12-23 --> Taxi That Increase Distance Ratio: 87.5%	 Increase Distance Average: 35.22867356364739%	 Decrease Distance Average: 22.605633211832338%
+		 Taxi That Increase Time Ratio: 12.5%	 Increase Time Average: 15.038856809491877%	 Decrease Time Average: 42.217485303721%
