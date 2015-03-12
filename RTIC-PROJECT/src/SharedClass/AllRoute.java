@@ -36,6 +36,8 @@ public class AllRoute extends ArrayList<GeoRouteList> {
 			
 			Pair<Double, Double> startWay = passengerPoint;
 			MyDate beginTime = passengerTime;
+			double dis;
+			double time;
 			
 			for(int i = 0 ; i < this.size() ; i++) {
 				
@@ -47,8 +49,8 @@ public class AllRoute extends ArrayList<GeoRouteList> {
 				
 				if(passengerTime.isAfter(current.getRight())) {
 	
-					double dis = SharedMethod.haversinDistance(current.getLeft(), passengerPoint);
-					double time = SharedMethod.dateDiff(passengerTime, current.getRight(), 0) / 60.0;
+					dis = SharedMethod.haversinDistance(current.getLeft(), passengerPoint);
+					time = SharedMethod.dateDiff(passengerTime, current.getRight(), 0) / 60.0;
 					
 					if(dis/time  < 2.0 && dis < distance) {
 						
@@ -63,6 +65,16 @@ public class AllRoute extends ArrayList<GeoRouteList> {
 				}
 				
 			} // End for
+			
+			dis = SharedMethod.haversinDistance(startWay, passengerPoint);
+			time = SharedMethod.dateDiff(passengerTime, beginTime, 0) / 60.0;
+			
+			if(dis/time < 0.2) {
+				
+				beginTime = passengerTime;
+				beginTime.addTime(-(int)(dis / 0.2));
+				
+			}
 			
 			//Add GeoRoute to Passenger
 			//System.out.println(get(temp).getPlate());

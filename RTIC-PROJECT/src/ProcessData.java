@@ -51,7 +51,7 @@ public class ProcessData {
 			
 			int passengerCount2 = 0;
 			for(GeoRouteList grl : result) passengerCount2 += grl.getPassengerIndex().size();
-			System.out.println("Result: " + passengerCount2 + "Passengers");
+			//System.out.println("Result: " + passengerCount2 + "Passengers");
 			SharedMethod.writeDataToFile("Sim Result/" + day + ".txt", "");
 			for(GeoRouteList grl : result) {
 	
@@ -140,7 +140,7 @@ public class ProcessData {
 			SharedMethod.writeDataToFile("Sim Result/Conclusion.txt", con);
 			System.out.println("\n" + con);
 			
-			date.addADay();
+			date.addDate(1);
 			
 		} // End for date loop
 		

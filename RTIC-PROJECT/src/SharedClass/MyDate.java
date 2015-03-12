@@ -29,12 +29,34 @@ public class MyDate {
 		
 	}
 	
-	public MyDate addADay() {
+	public void addTime(int add) {
 		
-		cal.add(Calendar.DAY_OF_MONTH, 1);
+		cal.add(Calendar.MINUTE, add);
+		String output = sdf.format(cal.getTime());
+		try {
+			
+			date = sdf.parse(output);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void addDate(int day) {
+		
+		cal.add(Calendar.DAY_OF_MONTH, day);
 		String output = sdf.format(cal.getTime());
 		
-		return new MyDate(output);
+		try {
+			
+			date = sdf.parse(output);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
